@@ -1,16 +1,15 @@
 #!/usr/bin/node
-function getCurrentYear() {
-    const date = new Date();
-    const year = date.getFullYear();
-    return year;
+function getCurrentYear () {
+  const date = new Date();
+  return date.getFullYear();
 }
 
-export default function getBudgetForCurrentYear(income, gdp, capita) {
-    const budget = {
-        [`income-${income}`]: income,
-        [`gdp-${gdp}`]: gdp,
-        [`capita-${capita}`]: capita
-    };
+export default function getBudgetForCurrentYear (income, gdp, capita) {
+  const budget = {
+    [`income-${getCurrentYear()}`]: income,
+    [`gdp-${getCurrentYear()}`]: gdp,
+    [`capita-${getCurrentYear()}`]: capita
+  };
 
-    return budget;
+  return budget;
 }
