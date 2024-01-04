@@ -1,7 +1,13 @@
 #!/usr/bin/node
-function getResponseFromAPI() {
+export default function getResponseFromAPI() {
   return new Promise((resolve, reject) => {
-    resolve(true);
-    reject();
+    setTimeout(() => {
+      const success = true;
+      if (success) {
+        resolve();
+      } else {
+        reject(new Error('Error fetching data from API'));
+      }
+    }, 2000);
   });
 }
