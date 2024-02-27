@@ -15,4 +15,6 @@ node_modules
 main.js
 100-main.js
 errors
+server.js
+file.txt
 ```
