@@ -1,31 +1,30 @@
 const http = require('http');
-const countStudents = require('./3-read_file_async');
+const fs = require('fs');
 
 const app = http.createServer((req, res) => {
-    res.setHeader('Content-Type', 'text/plain');
-    switch (req.url) {
-        case '/':
-            res.write('Hello Holberton School!');
-            break;
-        case '/students':
-            countStudents(process.argv[2])
-                .then((data) => {
-                    res.write('This is the list of our students\n');
-                    res.write(`Number of students: ${data.counter}\n`);
-                    for (const [key, value] of Object.entries(data.byField)) {
-                        res.write(`Number of students in ${key}: ${value.length}. List: ${value.join(', ')}\n`);
-                    }
-                })
-                .catch((error) => {
-                    res.write(error.message);
-                });
-            break;
-        default:
-            res.write('Hello Holberton School!');
-    }
-    res.end();
+  if (req.url === '/') {
+    res.writeHead(200, { 'Content-Type': 'text/plain' });
+    res.end('Hello Holberton School!');
+  } else if (req.url === '/students') {
+    const database = 'database.csv';
+    fs.readFile(database, 'utf8', (err, data) => {
+      if (err) {
+        res.writeHead(500, { 'Content-Type': 'text/plain' });
+        res.end('Internal Server Error');
+      } else {
+        const students = data.split('\n').slice(1).filter((line) => line.trim() !== '');
+        res.writeHead(200, { 'Content-Type': 'text/plain' });
+        res.end(`This is the list of our students:\n${students.join('\n')}`);
+      }
+    });
+  } else {
+    res.writeHead(404, { 'Content-Type': 'text/plain' });
+    res.end('Not Found');
+  }
 });
 
-app.listen(1245);
+app.listen(1245, () => {
+  console.log('Server is running on port 1245');
+});
 
 module.exports = app;
