@@ -7,14 +7,13 @@ const app = http.createServer((req, res) => {
     res.end('Hello Holberton School!');
   } else if (req.url === '/students') {
     const database = 'database.csv';
-    fs.readFile(database, 'utf8', (err, data) => {
+    fs.readFile('3-read_file_async.js', 'utf8', (err, data) => {
       if (err) {
         res.writeHead(500, { 'Content-Type': 'text/plain' });
         res.end('Internal Server Error');
       } else {
-        const students = data.split('\n').slice(1).filter((line) => line.trim() !== '');
         res.writeHead(200, { 'Content-Type': 'text/plain' });
-        res.end(`This is the list of our students:\n${students.join('\n')}`);
+        res.end(`This is the list of our students\n\n${data.replace(/DB_NAME/g, database)}`);
       }
     });
   } else {
